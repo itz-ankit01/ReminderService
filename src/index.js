@@ -13,7 +13,7 @@ const setupAndStartServer = () => {
     app.use(bodyParser.urlencoded({extended: true}));
 
     app.post('/api/v1/tickets', TicektController.create);
-    
+
     app.listen(PORT, () => {
         console.log(`Server Started at PORT ${PORT}`);
 
@@ -30,4 +30,10 @@ const setupAndStartServer = () => {
 }
 
 setupAndStartServer();
+
+
+/**
+ * [Service 1(100qps) Publisher] -----> message queue [masg1 msg2 .... msg100] ---> [Service 2(20qps) Subscriber]
+ * [Service 2 (Publisher)] ---> message queue [msgs] ----> [Service 1 (Subscriber)]
+ */
 
