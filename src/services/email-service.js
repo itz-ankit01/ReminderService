@@ -39,7 +39,6 @@ const updateTicket = async (ticketId, data) => {
 const createNotification = async (data) => {
     try {
         console.log(data);
-        
         const ticket = await repo.create(data);
         return ticket;
     } catch (error) {
@@ -48,10 +47,31 @@ const createNotification = async (data) => {
     }
 } 
 
+const subcribeEvents = async(payload) => {
+    try {
+        let service = payload.service;
+        let data = payload.data;
+        switch(service){
+            case 'CREATE_TICKET':
+                await createNotification(data);
+                break;
+            case 'SEND_BASIC_MAIL':
+                await sendBasicEmail(data);
+                break;
+            default:
+                console.log('No valid event received');
+                break;
+        }
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     sendBasicEmail,
     fetchPendingEmails,
     createNotification,
     updateTicket,
+    subcribeEvents
 }
 
